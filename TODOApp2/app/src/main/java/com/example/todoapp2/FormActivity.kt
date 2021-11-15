@@ -46,7 +46,7 @@ class FormActivity : AppCompatActivity() {
             val datePicker = DatePickerDialog(
                 this,
                 { _, year, month, dayOfMonth ->
-                    edtDate.setText("$dayOfMonth/$month/$year")
+                    edtDate.setText("$dayOfMonth/${month+1}/$year")
                 },
                 nowDate.year,
                 nowDate.monthValue - 1,
