@@ -83,9 +83,9 @@ class FormActivity : AppCompatActivity() {
                         LocalDateTime.of(
                             LocalDate.parse(
                                 edtDate.text,
-                                DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                                DateTimeFormatter.ofPattern("d/M/yyyy")
                             ),
-                            LocalTime.parse(edtTime.text, DateTimeFormatter.ofPattern("HH:mm"))
+                            LocalTime.parse(edtTime.text, DateTimeFormatter.ofPattern("H:m"))
                         )
                     )
                 )
