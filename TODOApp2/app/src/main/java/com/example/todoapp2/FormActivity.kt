@@ -43,15 +43,18 @@ class FormActivity : AppCompatActivity() {
         edtDate.setOnClickListener {
             val nowDate = LocalDate.now()
 
-            DatePickerDialog(
+            val datePicker = DatePickerDialog(
                 this,
                 { _, year, month, dayOfMonth ->
                     edtDate.setText("$dayOfMonth/$month/$year")
                 },
                 nowDate.year,
                 nowDate.monthValue - 1,
-                nowDate.dayOfMonth
-            ).show()
+                nowDate.dayOfMonth,
+
+            )
+            datePicker.datePicker.minDate = System.currentTimeMillis() - 1000
+            datePicker.show()
         }
 
         edtTime.setOnClickListener {
