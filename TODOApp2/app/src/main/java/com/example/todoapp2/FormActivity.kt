@@ -72,25 +72,27 @@ class FormActivity : AppCompatActivity() {
         }
 
         btnAdd.setOnClickListener {
-            setResult(
-                NEW_TASK,
-                Intent().putExtra(
-                    NEW_TASK_KEY,
-                    Task(
-                        0,
-                        edtTitle.text.toString(),
-                        edtDescription.text.toString(),
-                        LocalDateTime.of(
-                            LocalDate.parse(
-                                edtDate.text,
-                                DateTimeFormatter.ofPattern("d/M/yyyy")
-                            ),
-                            LocalTime.parse(edtTime.text, DateTimeFormatter.ofPattern("H:m"))
+            if(edtTime.text.isNotEmpty()&&edtDate.text.isNotEmpty()&&edtTitle.text.isNotEmpty()&&edtDescription.text.isNotEmpty()){
+                setResult(
+                    NEW_TASK,
+                    Intent().putExtra(
+                        NEW_TASK_KEY,
+                        Task(
+                            0,
+                            edtTitle.text.toString(),
+                            edtDescription.text.toString(),
+                            LocalDateTime.of(
+                                LocalDate.parse(
+                                    edtDate.text,
+                                    DateTimeFormatter.ofPattern("d/M/yyyy")
+                                ),
+                                LocalTime.parse(edtTime.text, DateTimeFormatter.ofPattern("H:m"))
+                            )
                         )
                     )
                 )
-            )
-            finish()
+                finish()
+            }
         }
     }
 }
