@@ -41,6 +41,8 @@ class TasksAdapter(private val list: MutableList<Task>) : RecyclerView.Adapter<R
                 list.removeAt(position)
 
                 notifyItemRemoved(position)
+
+                notifyItemRangeChanged(position, list.size)
             }
 
             rootView.setOnClickListener {  }
