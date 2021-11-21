@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.TimePicker
 import com.example.todoapp2.MainActivity.Companion.NEW_TASK
 import com.example.todoapp2.MainActivity.Companion.NEW_TASK_KEY
+import com.example.todoapp2.MainActivity.Companion.UPDATE_TASK
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -25,11 +26,25 @@ class FormActivity : AppCompatActivity() {
     private lateinit var edtTime: EditText
     private lateinit var btnAdd: Button
 
+    private var isDetailTask = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form)
 
+        isDetailTask = intent.getBooleanExtra("isTaskDetail", false)
+
         initViews()
+        if(isDetailTask) setTaskInfo(intent.getParcelableExtra("task")?:Task())
+    }
+
+    private fun setTaskInfo(task: Task) {
+        edtTitle.setText(task.title)
+        edtDescription.setText(task.description)
+        edtDate.setText(task.dateTime?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+        edtTime.setText(task.dateTime?.format(DateTimeFormatter.ofPattern("HH:mm")))
+
+        btnAdd.text = "Update"
     }
 
     @SuppressLint("SetTextI18n")
@@ -74,11 +89,11 @@ class FormActivity : AppCompatActivity() {
         btnAdd.setOnClickListener {
             if(edtTime.text.isNotEmpty()&&edtDate.text.isNotEmpty()&&edtTitle.text.isNotEmpty()&&edtDescription.text.isNotEmpty()){
                 setResult(
-                    NEW_TASK,
+                    if(isDetailTask) UPDATE_TASK else NEW_TASK,
                     Intent().putExtra(
                         NEW_TASK_KEY,
                         Task(
-                            0,
+                            intent.getParcelableExtra<Task>("task")?.id ?: 0,
                             edtTitle.text.toString(),
                             edtDescription.text.toString(),
                             LocalDateTime.of(
