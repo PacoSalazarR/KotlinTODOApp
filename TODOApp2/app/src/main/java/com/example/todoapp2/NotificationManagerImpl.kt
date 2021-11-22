@@ -11,6 +11,8 @@ import androidx.work.ListenableWorker.Result.success
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.todoapp2.LocalDateTimeConverter.toDateTime
+import com.example.todoapp2.MainActivity.Companion.DETAIL_TASK_KEY
+import com.example.todoapp2.MainActivity.Companion.TASK_KEY_EXTRA
 
 class NotificationManagerImpl(private val context: Context, params: WorkerParameters) : Worker(context, params) {
 
@@ -26,8 +28,8 @@ class NotificationManagerImpl(private val context: Context, params: WorkerParame
 
     private fun createNotification(task: Task){
         val resultIntent = Intent(context, MainActivity::class.java).apply {
-            putExtra("isTaskDetail",true)
-            putExtra("task",task)
+            putExtra(DETAIL_TASK_KEY,true)
+            putExtra(TASK_KEY_EXTRA,task)
         }
 
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {

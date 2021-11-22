@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         val NEW_TASK = 200
         val NEW_TASK_KEY = "newTask"
         val UPDATE_TASK = 201
+        val DETAIL_TASK_KEY = "isTaskDetail"
+        val TASK_KEY_EXTRA = "task"
     }
 
     private lateinit var rcvTask: RecyclerView
@@ -51,12 +53,12 @@ class MainActivity : AppCompatActivity() {
         }
         createNotificationChannel()
         initViews()
-        isDetailTask = intent.getBooleanExtra("isTaskDetail",false)
-        val task = intent.getParcelableExtra("task")?: Task()
+        isDetailTask = intent.getBooleanExtra(DETAIL_TASK_KEY,false)
+        val task = intent.getParcelableExtra(TASK_KEY_EXTRA)?: Task()
         if (isDetailTask) {
             val intent = Intent(this, FormActivity::class.java).apply {
-                putExtra("isTaskDetail",true)
-                putExtra("task",task)
+                putExtra(DETAIL_TASK_KEY,true)
+                putExtra(TASK_KEY_EXTRA,task)
             }
             startActivity(intent)
         }
@@ -95,8 +97,8 @@ class MainActivity : AppCompatActivity() {
             instanceWorkManager.cancelUniqueWork("NOTIFICATION_WORK ${task.id}")
         },onClickDetailTask ={ task ->
             startActivityForResult(Intent(this, FormActivity::class.java).apply {
-                putExtra("isTaskDetail",true)
-                putExtra("task",task)
+                putExtra(DETAIL_TASK_KEY,true)
+                putExtra(TASK_KEY_EXTRA,task)
             }, UPDATE_TASK)
         })
 

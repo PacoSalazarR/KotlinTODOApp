@@ -7,8 +7,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import com.example.todoapp2.MainActivity.Companion.DETAIL_TASK_KEY
 import com.example.todoapp2.MainActivity.Companion.NEW_TASK
 import com.example.todoapp2.MainActivity.Companion.NEW_TASK_KEY
+import com.example.todoapp2.MainActivity.Companion.TASK_KEY_EXTRA
 import com.example.todoapp2.MainActivity.Companion.UPDATE_TASK
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -30,13 +32,13 @@ class FormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form)
 
-        isDetailTask = intent.getBooleanExtra("isTaskDetail",false)
+        isDetailTask = intent.getBooleanExtra(DETAIL_TASK_KEY,false)
 
         initViews()
-        if (isDetailTask) setTaskinfo(intent.getParcelableExtra("task")?: Task())
+        if (isDetailTask) setTaskInfo(intent.getParcelableExtra(TASK_KEY_EXTRA)?: Task())
     }
 
-    private fun setTaskinfo(task: Task) {
+    private fun setTaskInfo(task: Task) {
 
         edtTitle.setText(task.title)
         edtDescription.setText(task.description)
@@ -61,7 +63,7 @@ class FormActivity : AppCompatActivity() {
 
             val datePicker =  DatePickerDialog(this,
                 { _, year, month, dayOfMonth ->
-                    edtDate.setText("${if(dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth}/${if(month < 10) {"0${month+1}"} else { month+1} }/$year")
+                    edtDate.setText("${if(dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth}/${if(month < 10) {"0${month+1}"} else {month+1}}/$year")
                 },
                 nowDate.year,
                 nowDate.monthValue - 1,
@@ -97,15 +99,13 @@ class FormActivity : AppCompatActivity() {
                     Intent().putExtra(
                         NEW_TASK_KEY,
                         Task(
-                            intent.getParcelableExtra<Task>("task")?.id ?: 0,
+                            intent.getParcelableExtra<Task>(TASK_KEY_EXTRA)?.id ?: 0,
                             edtTitle.text.toString(),
                             edtDescription.text.toString(),
                             LocalDateTime.of(LocalDate.parse(edtDate.text, DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                 LocalTime.parse(edtTime.text, DateTimeFormatter.ofPattern("HH:mm")))
                         )
                     ))
-                finish()
-            }else{
                 finish()
             }
         }
