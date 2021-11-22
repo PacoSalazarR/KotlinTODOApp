@@ -91,6 +91,8 @@ class MainActivity : AppCompatActivity() {
                 })
                 adapter.removeTask(position)
             }
+            val instanceWorkManager = WorkManager.getInstance(this)
+            instanceWorkManager.cancelUniqueWork("NOTIFICATION_WORK ${task.id}")
         },onClickDetailTask ={ task ->
             startActivityForResult(Intent(this, FormActivity::class.java).apply {
                 putExtra("isTaskDetail",true)
@@ -121,14 +123,14 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 MainScope().launch(Dispatchers.IO) {
-                    db.taskDao().saveNewTask(it)
+                    val id = db.taskDao().saveNewTask(it)
 
                     val zone = OffsetDateTime.now().offset
                     val selectedMillis = it.dateTime?.toInstant(zone)?.toEpochMilli() ?: 0
                     val nowMillis = LocalDateTime.now().toInstant(zone).toEpochMilli()
 
                     scheduleNotification(selectedMillis - nowMillis, Data.Builder().apply{
-                        putInt("notificationID",it.id)
+                        putInt("notificationID",id.toInt())
                         putString("notificationTitle", it.title)
                         putString("notificationDescription", it.description)
                         putString("notificationDateTime",it.dateTime.toString())
